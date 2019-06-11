@@ -25,6 +25,8 @@
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ###############################################################################
 
+export PYTHON_BIN=python3
+
 TOPLEVEL_LANG ?= vhdl
 
 ifneq ($(TOPLEVEL_LANG),vhdl)
@@ -35,7 +37,9 @@ clean::
 
 else
 
-TOPLEVEL = dec_viterbi
+MODULE   := tester
+
+TOPLEVEL = top_dec_viterbi
 
 ifeq ($(OS),Msys)
 WPWD=$(shell sh -c 'pwd -W')
@@ -47,7 +51,27 @@ COCOTB?=$(WPWD)/../../..
 
 SRC_BASE = $(COCOTB)/tests/designs/viterbi_decoder_axi4s
 
+GHDL_ARGS ?= --ieee=synopsys
+
 RTL_LIBRARY = dec_viterbi
+
+# VHDL_SOURCES_dec_viterbi = $(SRC_BASE)/packages/pkg_helper.vhd \
+# 	$(SRC_BASE)/packages/pkg_param.vhd \
+# 	$(SRC_BASE)/packages/pkg_param_derived.vhd \
+# 	$(SRC_BASE)/packages/pkg_types.vhd \
+# 	$(SRC_BASE)/packages/pkg_components.vhd \
+# 	$(SRC_BASE)/packages/pkg_trellis.vhd \
+# 	$(SRC_BASE)/src/generic_sp_ram.vhd \
+# 	$(SRC_BASE)/src/axi4s_buffer.vhd \
+# 	$(SRC_BASE)/src/branch_distance.vhd \
+# 	$(SRC_BASE)/src/traceback.vhd \
+# 	$(SRC_BASE)/src/acs.vhd \
+# 	$(SRC_BASE)/src/ram_ctrl.vhd \
+# 	$(SRC_BASE)/src/reorder.vhd \
+# 	$(SRC_BASE)/src/recursion.vhd
+#
+# VHDL_SOURCES = $(SRC_BASE)/src/top_dec_viterbi.vhd
+
 
 VHDL_SOURCES = $(SRC_BASE)/packages/pkg_helper.vhd \
 	       $(SRC_BASE)/packages/pkg_param.vhd \
@@ -63,7 +87,7 @@ VHDL_SOURCES = $(SRC_BASE)/packages/pkg_helper.vhd \
 	       $(SRC_BASE)/src/ram_ctrl.vhd \
 	       $(SRC_BASE)/src/reorder.vhd \
 	       $(SRC_BASE)/src/recursion.vhd \
-	       $(SRC_BASE)/src/dec_viterbi.vhd \
+	       $(SRC_BASE)/src/top_dec_viterbi.vhd \
 
 include $(COCOTB)/makefiles/Makefile.inc
 include $(COCOTB)/makefiles/Makefile.sim
